@@ -39,6 +39,30 @@ bool operator<(const ComplexBase& first, const ComplexBase& second){
 	}  
 }
 
+ComplexBase::ComplexBase(){
+
+}
+
+double ComplexBase::real() const{
+	return 0.0;
+}
+
+double ComplexBase::imaginary() const{
+	return 0.0;
+}
+
+double ComplexBase::mod() const{
+	return 0.0;
+}
+
+double ComplexBase::angle() const{
+	return 0.0;
+}
+
+string ComplexBase::to_s(){
+	return "";
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //ComplexDicart
 //Стандартный конструктор

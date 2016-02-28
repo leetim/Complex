@@ -3,13 +3,11 @@
 
 class ComplexBase{
 public:
-	friend bool complex_eq(const ComplexBase& first, const ComplexBase& second, double epsilon);
-	friend bool operator==(const ComplexBase& first, const ComplexBase& second);
-	friend bool operator<(const ComplexBase& first, const ComplexBase& second);
-	virtual double real() const =0;
-	virtual double imaginary() const =0;
-	virtual double mod() const =0;
-	virtual double angle() const =0;
+	ComplexBase();
+	virtual double real() const;
+	virtual double imaginary() const;
+	virtual double mod() const;
+	virtual double angle() const;
 	virtual std::string to_s();
 };
 
@@ -74,3 +72,7 @@ private:
 	double mod_part;
 	double angle_part;
 };
+
+bool complex_eq(const ComplexBase& first, const ComplexBase& second, double epsilon);
+bool operator==(const ComplexBase& first, const ComplexBase& second);
+bool operator<(const ComplexBase& first, const ComplexBase& second);
