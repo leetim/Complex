@@ -217,6 +217,9 @@ double ComplexPolar::abs2() const{
 
 //Угло в полярных координатах
 double ComplexPolar::angle() const{
+	if (std::abs(angle_part) > M_PI){
+		return atan2(sin(angle_part), cos(angle_part));
+	}
 	return angle_part;
 }
 

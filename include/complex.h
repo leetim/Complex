@@ -70,7 +70,7 @@ public:
 	double abs() const;
 	double abs2() const;
 	double angle() const;
-private:
+protected:
 	double abs_part;
 	double angle_part;
 };
