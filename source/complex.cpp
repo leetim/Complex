@@ -51,7 +51,7 @@ double ComplexBase::imaginary() const{
 	return 0.0;
 }
 
-double ComplexBase::mod() const{
+double ComplexBase::abs() const{
 	return 0.0;
 }
 
@@ -83,7 +83,7 @@ ComplexDicart::ComplexDicart(const double& v, const double& r){
 	imaginary_part = r;
 }
 
-//Конструктор копирования
+//Конструктор копирования комплексного числа в другом представлении
 ComplexDicart::ComplexDicart(const ComplexBase& v){
 	real_part = v.real();
 	imaginary_part = v.imaginary();
@@ -101,7 +101,7 @@ ComplexDicart ComplexDicart::operator-() const{
 
 //Возведение в степень
 ComplexDicart ComplexDicart::pow(const int& expn) const{
-	double m = std::pow(mod(), expn);
+	double m = std::pow(abs(), expn);
 	double a = angle() * expn;
 	return ComplexDicart(m * cos(a), m * sin(a));
 }
@@ -117,15 +117,20 @@ double ComplexDicart::imaginary() const{
 }
 
 //Модуль числа
-double ComplexDicart::mod() const{
+double ComplexDicart::abs() const{
 	return sqrt(SQR(real_part) + SQR(imaginary_part));
+}
+
+//Квадрат модуля числа
+double ComplexDicart::abs2() const{
+	return SQR(real_part) + SQR(imaginary_part);
 }
 
 //Угол в полярном предствалении
 double ComplexDicart::angle() const{
-	if (mod() == 0.0){
+	if (abs() == 0.0){
 		return 0.0;
-	}
+	} 
 	return atan2(imaginary_part, real_part);
 }
 
@@ -140,45 +145,45 @@ string ComplexDicart::to_s(){
 //ComplexPolar
 //Стандартный конструктор
 ComplexPolar::ComplexPolar(){
-	mod_part = 0.0;
+	abs_part = 0.0;
 	angle_part = 0.0;
 }
 
 //конструктор из действительного числа
 ComplexPolar::ComplexPolar(const double& val){
-	mod_part = val;
+	abs_part = val;
 	angle_part = 0.0;
 }
 
 //конструктор из полярных координат
-ComplexPolar::ComplexPolar(const double& mod, const double& angle){
-	mod_part = mod;
-	if (mod == 0.0){
+ComplexPolar::ComplexPolar(const double& abs, const double& angle){
+	abs_part = abs;
+	if (abs == 0.0){
 		angle_part = 0.0;
 		return;
 	}
 	angle_part = angle;
 }
 
-//Конструктор копирования
+//Конструктор копирования комплексного числа в другом представлении
 ComplexPolar::ComplexPolar(const ComplexBase& val){
-	mod_part = val.mod();
+	abs_part = val.abs();
 	angle_part = val.angle();
 }
 
 //полярное сопряженное
 ComplexPolar ComplexPolar::conjugate() const{
-	return ComplexPolar(mod(), -angle());
+	return ComplexPolar(abs(), -angle());
 }
 
 //получение обратного числа относительно сложения
 ComplexPolar ComplexPolar::operator-() const{
-	return ComplexPolar(mod(), angle() + M_PI);
+	return ComplexPolar(abs(), angle() + M_PI);
 }
 
 //Возведение в степень
 ComplexPolar ComplexPolar::pow(const int& expn) const{
-	double m = std::pow(mod(), expn);
+	double m = std::pow(abs(), expn);
 	double a = angle() * expn;
 	return ComplexPolar(m, a);
 }
@@ -186,23 +191,28 @@ ComplexPolar ComplexPolar::pow(const int& expn) const{
 //Преобразование к строке
 string ComplexPolar::to_s(){
 	stringstream ss;
-	ss << mod() << "(cos(" << angle() << ")+i sin(" << angle() << "))";
+	ss << abs() << "(cos(" << angle() << ")+i sin(" << angle() << "))";
 	return ss.str();
 }
 
 //Действительная часть
 double ComplexPolar::real() const{
-	return mod() * cos(angle());
+	return abs() * cos(angle());
 }
 
 //Мнимая часть
 double ComplexPolar::imaginary() const{
-	return mod() * sin(angle());
+	return abs() * sin(angle());
 }
 
 //Модуль числа
-double ComplexPolar::mod() const{
-	return mod_part;
+double ComplexPolar::abs() const{
+	return abs_part;
+}
+
+//Квадрат модуля числа
+double ComplexPolar::abs2() const{
+	return SQR(abs_part);
 }
 
 //Угло в полярных координатах
@@ -265,7 +275,7 @@ ComplexDicart operator*(const ComplexDicart& left, const double& right){
 
 //Деление
 ComplexDicart operator/(const ComplexDicart& left, const ComplexDicart& right){
-	return left * right.conjugate() / right.mod();
+	return left * right.conjugate() / right.abs2();
 }
 
 //Деление действительного числа
@@ -317,12 +327,12 @@ ComplexPolar operator-(const ComplexPolar& left, const double& right){
 
 //Умножение
 ComplexPolar operator*(const ComplexPolar& left, const ComplexPolar& right){
-	return ComplexPolar(left.mod() * right.mod(), left.angle() + right.angle());
+	return ComplexPolar(left.abs() * right.abs(), left.angle() + right.angle());
 }
 
 //Умножение на double слева
 ComplexPolar operator*(const double& left, const ComplexPolar& right){
-	return ComplexPolar(left * right.mod(), right.angle());
+	return ComplexPolar(left * right.abs(), right.angle());
 }
 
 //Умножение на double справа
@@ -332,15 +342,15 @@ ComplexPolar operator*(const ComplexPolar& left, const double& right){
 
 //Деление
 ComplexPolar operator/(const ComplexPolar& left, const ComplexPolar& right){
-	return ComplexPolar(left.mod() / right.mod(), left.angle() - right.angle());
+	return ComplexPolar(left.abs() / right.abs(), left.angle() - right.angle());
 }
 
 //Деление double
 ComplexPolar operator/(const double& left, const ComplexPolar& right){
-	return ComplexPolar(left / right.mod(), -right.angle());
+	return ComplexPolar(left / right.abs(), -right.angle());
 }
 
 //Деление на double
 ComplexPolar operator/(const ComplexPolar& left, const double& right){
-	return ComplexPolar(left.mod() / right, left.mod());
+	return ComplexPolar(left.abs() / right, left.angle());
 }

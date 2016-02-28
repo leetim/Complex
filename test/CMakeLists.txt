@@ -23,6 +23,6 @@ set_property(TARGET gmock_main PROPERTY IMPORTED_LOCATION ../gtestLib/libgmock_m
 # set_property(TARGET complex1 PROPERTY IMPORTED_LOCATION ../../lib/libcomplex.a)
 
 #link_directories(./gtestLib)
-add_executable(myTest ./test.cpp ../../source/complex.cpp)
-target_link_libraries(myTest gtest gtest_main gmock gmock_main)
+add_executable(myTestDicart ./test.cpp ../../source/complex.cpp)
+target_link_libraries(myTestDicart gtest gtest_main gmock gmock_main)
 #target_link_libraries(myTest complex1)

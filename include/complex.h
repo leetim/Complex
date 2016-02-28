@@ -6,7 +6,7 @@ public:
 	ComplexBase();
 	virtual double real() const;
 	virtual double imaginary() const;
-	virtual double mod() const;
+	virtual double abs() const;
 	virtual double angle() const;
 	virtual std::string to_s();
 };
@@ -35,7 +35,8 @@ public:
 	std::string to_s();
 	double real() const;
 	double imaginary() const;
-	double mod() const;
+	double abs() const;
+	double abs2() const;
 	double angle() const;
 protected:
 	double real_part;
@@ -46,7 +47,7 @@ class ComplexPolar: public ComplexBase{
 public:
 	ComplexPolar();
 	ComplexPolar(const double& val);
-	ComplexPolar(const double& mode, const double& angle);
+	ComplexPolar(const double& abse, const double& angle);
 	ComplexPolar(const ComplexBase& val);
 	friend ComplexPolar operator+(const ComplexPolar& left, const ComplexPolar& right);
 	friend ComplexPolar operator+(const double& left, const ComplexPolar& right);
@@ -66,10 +67,11 @@ public:
 	std::string to_s();
 	double real() const;
 	double imaginary() const;
-	double mod() const;
+	double abs() const;
+	double abs2() const;
 	double angle() const;
 private:
-	double mod_part;
+	double abs_part;
 	double angle_part;
 };
 
