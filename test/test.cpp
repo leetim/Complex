@@ -38,7 +38,7 @@ TEST_F(TestComplexDicart, dicart_constructor){
 	ComplexDicart t2 = a;
 	ASSERT_EQ(t2.real(), 14.3);
 	ASSERT_EQ(t2.imaginary(), 25.67);
-	a = ComplexPolar(12, 0.3);
+	a = Complex(ComplexPolar(12, 0.3));
 	ASSERT_NEAR(a.real(), 11.464037869507, EPS);
 	ASSERT_NEAR(a.imaginary(), 3.5462424799, EPS);
 
@@ -171,6 +171,7 @@ protected:
 
 	ComplexPolar a;
 	ComplexPolar b;
+	Complex* dic;
 };
 
 TEST_F(TestComplexPolar, polar_constructor){
@@ -316,13 +317,11 @@ TEST_F(TestComplexPolar, division){
 	ASSERT_NEAR(t.imaginary(), 0.119749499228, EPS);
 }
 
-TEST_F(TestComplexPolar, other){
-	ComplexBase a;
-	ASSERT_EQ(a.real(), 0.0);
-	ASSERT_EQ(a.imaginary(), 0.0);
-	ASSERT_EQ(a.abs(), 0.0);
-	ASSERT_EQ(a.angle(), 0.0);
-	ASSERT_EQ(a.to_s(), "");
+TEST_F(TestComplexPolar, polymorf){
+	dic = new ComplexPolar(12, 0.3);
+	ASSERT_NEAR(dic->real(), 11.464037869507, EPS);
+	ASSERT_NEAR(dic->imaginary(), 3.5462424799, EPS);
+	delete dic;
 }
 
 int main(int argc, char *argv[])

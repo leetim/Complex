@@ -1,54 +1,48 @@
 #pragma once
 #include <string>
 
-class ComplexBase{
+class Complex{
 public:
-	ComplexBase();
+	Complex();
+	Complex(const double& val);
+	Complex(const double& real, const double& imaginary);
+	Complex(const Complex& val);
+	friend Complex operator+(const Complex& left, const Complex& right);
+	friend Complex operator+(const double& left, const Complex& right);
+	friend Complex operator+(const Complex& left, const double& right);
+	friend Complex operator-(const Complex& left, const Complex& right);
+	friend Complex operator-(const double& left, const Complex& right);
+	friend Complex operator-(const Complex& left, const double& right);
+	friend Complex operator*(const Complex& left, const Complex& right);
+	friend Complex operator*(const double& left, const Complex& right);
+	friend Complex operator*(const Complex& left, const double& right);
+	friend Complex operator/(const Complex& left, const Complex& right);
+	friend Complex operator/(const double& left, const Complex& right);
+	friend Complex operator/(const Complex& left, const double& right);
+	Complex conjugate() const;
+	Complex operator-() const;
+	Complex pow(const int& expn) const;
+	std::string to_s();
 	virtual double real() const;
 	virtual double imaginary() const;
 	virtual double abs() const;
+	virtual double abs2() const;
 	virtual double angle() const;
-	virtual std::string to_s();
-};
-
-class ComplexDicart: public ComplexBase{
-public:
-	ComplexDicart();
-	ComplexDicart(const double& val);
-	ComplexDicart(const double& real, const double& imaginary);
-	ComplexDicart(const ComplexBase& val);
-	friend ComplexDicart operator+(const ComplexDicart& left, const ComplexDicart& right);
-	friend ComplexDicart operator+(const double& left, const ComplexDicart& right);
-	friend ComplexDicart operator+(const ComplexDicart& left, const double& right);
-	friend ComplexDicart operator-(const ComplexDicart& left, const ComplexDicart& right);
-	friend ComplexDicart operator-(const double& left, const ComplexDicart& right);
-	friend ComplexDicart operator-(const ComplexDicart& left, const double& right);
-	friend ComplexDicart operator*(const ComplexDicart& left, const ComplexDicart& right);
-	friend ComplexDicart operator*(const double& left, const ComplexDicart& right);
-	friend ComplexDicart operator*(const ComplexDicart& left, const double& right);
-	friend ComplexDicart operator/(const ComplexDicart& left, const ComplexDicart& right);
-	friend ComplexDicart operator/(const double& left, const ComplexDicart& right);
-	friend ComplexDicart operator/(const ComplexDicart& left, const double& right);
-	ComplexDicart conjugate() const;
-	ComplexDicart operator-() const;
-	ComplexDicart pow(const int& expn) const;
-	std::string to_s();
-	double real() const;
-	double imaginary() const;
-	double abs() const;
-	double abs2() const;
-	double angle() const;
-protected:
+private:
 	double real_part;
 	double imaginary_part;
 };
 
-class ComplexPolar: public ComplexBase{
+typedef Complex ComplexBase; 
+typedef Complex ComplexDicart;
+
+class ComplexPolar: public Complex{
 public:
 	ComplexPolar();
 	ComplexPolar(const double& val);
 	ComplexPolar(const double& abse, const double& angle);
-	ComplexPolar(const ComplexBase& val);
+	ComplexPolar(const ComplexPolar& val);
+	ComplexPolar(const Complex& val);
 	friend ComplexPolar operator+(const ComplexPolar& left, const ComplexPolar& right);
 	friend ComplexPolar operator+(const double& left, const ComplexPolar& right);
 	friend ComplexPolar operator+(const ComplexPolar& left, const double& right);
@@ -70,11 +64,11 @@ public:
 	double abs() const;
 	double abs2() const;
 	double angle() const;
-protected:
+private:
 	double abs_part;
 	double angle_part;
 };
 
-bool complex_eq(const ComplexBase& first, const ComplexBase& second, double epsilon);
-bool operator==(const ComplexBase& first, const ComplexBase& second);
-bool operator<(const ComplexBase& first, const ComplexBase& second);
+bool complex_eq(const Complex& first, const Complex& second, double epsilon);
+bool operator==(const Complex& first, const Complex& second);
+bool operator<(const Complex& first, const Complex& second);

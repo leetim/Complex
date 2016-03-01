@@ -11,9 +11,9 @@
 using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-//ComplexBase
+//fuctions
 //Проверка на равенство 2-х комплексных чисел с заданной точностью
-bool complex_eq(const ComplexBase& fir, const ComplexBase& sec, double eps){
+bool complex_eq(const Complex& fir, const Complex& sec, double eps){
 	double fr = fir.real();
 	double fi = fir.imaginary(); 
 	double sr = sec.real();
@@ -23,14 +23,14 @@ bool complex_eq(const ComplexBase& fir, const ComplexBase& sec, double eps){
 }
 
 //Равенство 2-х комплексных чисел с точностью EPSILON
-bool operator==(const ComplexBase& first, const ComplexBase& second){
+bool operator==(const Complex& first, const Complex& second){
 	return complex_eq(first, second, EPSILON);
 }
 
 //Сравнение 2-х чисел
 //Вообще говоря это не математический порядок,
 //Нужен лишь для использования в set и map и для прочих сортировок
-bool operator<(const ComplexBase& first, const ComplexBase& second){
+bool operator<(const Complex& first, const Complex& second){
 	if (first.real() != second.real()){	
 		return first.real() < second.real();
 	}
@@ -39,95 +39,71 @@ bool operator<(const ComplexBase& first, const ComplexBase& second){
 	}  
 }
 
-ComplexBase::ComplexBase(){
-
-}
-
-double ComplexBase::real() const{
-	return 0.0;
-}
-
-double ComplexBase::imaginary() const{
-	return 0.0;
-}
-
-double ComplexBase::abs() const{
-	return 0.0;
-}
-
-double ComplexBase::angle() const{
-	return 0.0;
-}
-
-string ComplexBase::to_s(){
-	return "";
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////
-//ComplexDicart
+//Complex
 //Стандартный конструктор
-ComplexDicart::ComplexDicart(){
+Complex::Complex(){
 	real_part = 0.0;
 	imaginary_part = 0.0;
 }
 
 //Конструктор из действительного числа
-ComplexDicart::ComplexDicart(const double& v){
+Complex::Complex(const double& v){
 	real_part = v;
 	imaginary_part = 0.0;
 }
 
 //Конструктор с мнимой и действительной частью
-ComplexDicart::ComplexDicart(const double& v, const double& r){
+Complex::Complex(const double& v, const double& r){
 	real_part = v;
 	imaginary_part = r;
 }
 
 //Конструктор копирования комплексного числа в другом представлении
-ComplexDicart::ComplexDicart(const ComplexBase& v){
+Complex::Complex(const Complex& v){
 	real_part = v.real();
 	imaginary_part = v.imaginary();
 }
 
 //Получение сопряженного комплексного числа
-ComplexDicart ComplexDicart::conjugate() const{
-	return ComplexDicart(real_part, -imaginary_part);
+Complex Complex::conjugate() const{
+	return Complex(real_part, -imaginary_part);
 }
 
 //получение обратного относительно сложения
-ComplexDicart ComplexDicart::operator-() const{
-	return ComplexDicart(-real_part, -imaginary_part);
+Complex Complex::operator-() const{
+	return Complex(-real_part, -imaginary_part);
 }
 
 //Возведение в степень
-ComplexDicart ComplexDicart::pow(const int& expn) const{
+Complex Complex::pow(const int& expn) const{
 	double m = std::pow(abs(), expn);
 	double a = angle() * expn;
-	return ComplexDicart(m * cos(a), m * sin(a));
+	return Complex(m * cos(a), m * sin(a));
 }
 
 //Действительная часть числа
-double ComplexDicart::real() const{
+double Complex::real() const{
 	return real_part;
 }
 
 //Мнимая часть числа
-double ComplexDicart::imaginary() const{
+double Complex::imaginary() const{
 	return imaginary_part;
 }
 
 //Модуль числа
-double ComplexDicart::abs() const{
+double Complex::abs() const{
 	return sqrt(SQR(real_part) + SQR(imaginary_part));
 }
 
 //Квадрат модуля числа
-double ComplexDicart::abs2() const{
+double Complex::abs2() const{
 	return SQR(real_part) + SQR(imaginary_part);
 }
 
 //Угол в полярном предствалении
-double ComplexDicart::angle() const{
+double Complex::angle() const{
 	if (abs() == 0.0){
 		return 0.0;
 	} 
@@ -135,7 +111,7 @@ double ComplexDicart::angle() const{
 }
 
 //Преобразование к строке
-string ComplexDicart::to_s(){
+string Complex::to_s(){
 	std::stringstream ss;
 	ss << "(" << real_part << ") + (" << imaginary_part << ")i";
 	return ss.str();
@@ -165,8 +141,14 @@ ComplexPolar::ComplexPolar(const double& abs, const double& angle){
 	angle_part = angle;
 }
 
+//Конструктор копирования
+ComplexPolar::ComplexPolar(const ComplexPolar& val){
+	abs_part = val.abs();
+	angle_part = val.angle();
+}
+
 //Конструктор копирования комплексного числа в другом представлении
-ComplexPolar::ComplexPolar(const ComplexBase& val){
+ComplexPolar::ComplexPolar(const Complex& val){
 	abs_part = val.abs();
 	angle_part = val.angle();
 }
@@ -224,85 +206,85 @@ double ComplexPolar::angle() const{
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-//ComplexDicart friend function
+//Complex friend function
 //Сложение
-ComplexDicart operator+(const ComplexDicart& left, const ComplexDicart& right){
+Complex operator+(const Complex& left, const Complex& right){
 	double r = left.real() + right.real();
 	double i = left.imaginary() + right.imaginary();
-	return ComplexDicart(r, i);
+	return Complex(r, i);
 }
 
 //Сложение с double слева
-ComplexDicart operator+(const double& left, const ComplexDicart& right){
-	return ComplexDicart(left + right.real(), right.imaginary());
+Complex operator+(const double& left, const Complex& right){
+	return Complex(left + right.real(), right.imaginary());
 }
 
 //Сложение с double справа
-ComplexDicart operator+(const ComplexDicart& left, const double& right){
+Complex operator+(const Complex& left, const double& right){
 	return right + left;
 }
 
 //Вычитание
-ComplexDicart operator-(const ComplexDicart& left, const ComplexDicart& right){
+Complex operator-(const Complex& left, const Complex& right){
 	return left + (-right);
 }
 
 //Вычитание из double
-ComplexDicart operator-(const double& left, const ComplexDicart& right){
+Complex operator-(const double& left, const Complex& right){
 	return left + (-right);
 }
 
 //Вычитание double
-ComplexDicart operator-(const ComplexDicart& left, const double& right){
+Complex operator-(const Complex& left, const double& right){
 	return left + (-right);
 }
 
 //Умножение
-ComplexDicart operator*(const ComplexDicart& left, const ComplexDicart& right){
+Complex operator*(const Complex& left, const Complex& right){
 	double lr = left.real();
 	double li = left.imaginary();
 	double rr = right.real();
 	double ri = right.imaginary();
-	return ComplexDicart(lr * rr - li * ri, lr * ri + li * rr);
+	return Complex(lr * rr - li * ri, lr * ri + li * rr);
 }
 
 //Умножение на double слева
-ComplexDicart operator*(const double& left, const ComplexDicart& right){
-	return ComplexDicart(left * right.real(), left * right.imaginary());
+Complex operator*(const double& left, const Complex& right){
+	return Complex(left * right.real(), left * right.imaginary());
 }
 
 //Умножение на double справа
-ComplexDicart operator*(const ComplexDicart& left, const double& right){
+Complex operator*(const Complex& left, const double& right){
 	return right * left;
 }
 
 //Деление
-ComplexDicart operator/(const ComplexDicart& left, const ComplexDicart& right){
+Complex operator/(const Complex& left, const Complex& right){
 	return left * right.conjugate() / right.abs2();
 }
 
 //Деление действительного числа
-ComplexDicart operator/(const double& left, const ComplexDicart& right){
-	return ComplexDicart(left) / right;
+Complex operator/(const double& left, const Complex& right){
+	return Complex(left) / right;
 }
 
 //Деление на действительное число
-ComplexDicart operator/(const ComplexDicart& left, const double& right){
-	return ComplexDicart(left.real() / right, left.imaginary() / right);
+Complex operator/(const Complex& left, const double& right){
+	return Complex(left.real() / right, left.imaginary() / right);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //ComplexPolar friend functions
 //Сложение
 ComplexPolar operator+(const ComplexPolar& left, const ComplexPolar& right){
-	ComplexDicart t1 = left;
-	ComplexDicart t2 = right;
+	Complex t1 = left;
+	Complex t2 = right;
 	return ComplexPolar(t1 + t2);
 }
 
 //Сложение с double слева
 ComplexPolar operator+(const double& left, const ComplexPolar& right){
-	ComplexDicart t = right;
+	Complex t = right;
 	return ComplexPolar(left + t);
 }
 
@@ -313,8 +295,8 @@ ComplexPolar operator+(const ComplexPolar& left, const double& right){
 
 //Разность
 ComplexPolar operator-(const ComplexPolar& left, const ComplexPolar& right){
-	ComplexDicart t1 = left;
-	ComplexDicart t2 = right;
+	Complex t1 = left;
+	Complex t2 = right;
 	return ComplexPolar(t1 - t2);
 }
 
