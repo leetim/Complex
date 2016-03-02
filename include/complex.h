@@ -20,9 +20,10 @@ public:
 	friend Complex operator/(const double& left, const Complex& right);
 	friend Complex operator/(const Complex& left, const double& right);
 	Complex conjugate() const;
+	Complex& operator=(const Complex& other);
 	Complex operator-() const;
 	Complex pow(const int& expn) const;
-	std::string to_s();
+	virtual std::string to_s();
 	virtual double real() const;
 	virtual double imaginary() const;
 	virtual double abs() const;
@@ -56,6 +57,7 @@ public:
 	friend ComplexPolar operator/(const double& left, const ComplexPolar& right);
 	friend ComplexPolar operator/(const ComplexPolar& left, const double& right);
 	ComplexPolar conjugate() const;
+	ComplexPolar& operator=(const Complex& other);
 	ComplexPolar operator-() const;
 	ComplexPolar pow(const int& expn) const;
 	std::string to_s();

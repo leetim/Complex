@@ -75,6 +75,13 @@ Complex Complex::operator-() const{
 	return Complex(-real_part, -imaginary_part);
 }
 
+//Оператор равно
+Complex& Complex::operator=(const Complex& other){
+	real_part = other.real();
+	imaginary_part = other.imaginary();
+	return *this;
+}
+
 //Возведение в степень
 Complex Complex::pow(const int& expn) const{
 	double m = std::pow(abs(), expn);
@@ -156,6 +163,13 @@ ComplexPolar::ComplexPolar(const Complex& val){
 //полярное сопряженное
 ComplexPolar ComplexPolar::conjugate() const{
 	return ComplexPolar(abs(), -angle());
+}
+
+//Оператор равно
+ComplexPolar& ComplexPolar::operator=(const Complex& other){
+	abs_part = other.abs();
+	angle_part = other.angle();
+	return *this;
 }
 
 //получение обратного числа относительно сложения
